@@ -1,0 +1,71 @@
+{
+	"format_version": 2,
+	"metadata": {
+		"authors": [
+			"nullun"
+		],
+		"generated_with": {
+			"bridge": [
+				"2.7.15"
+			],
+			"dash": [
+				"github:bridge-core/dash-compiler#8fa35c73292f6382747d0f411fca26431a6d2c8e"
+			]
+		}
+	},
+	"header": {
+		"name": "Elevators BP",
+		"description": "Adds elevators to teleport vertically to between them.",
+		"min_engine_version": [
+			1,
+			20,
+			70
+		],
+		"uuid": "9c04330c-0c85-4543-a454-34190c997236",
+		"version": [
+			1,
+			0,
+			1
+		]
+	},
+	"modules": [
+		{
+			"type": "data",
+			"uuid": "b3736e51-c089-4a54-9705-3c27c87b7f78",
+			"version": [
+				1,
+				0,
+				0
+			]
+		},
+		{
+			"type": "script",
+			"language": "javascript",
+			"uuid": "fb2bd700-fe3e-4379-825e-01c6a1d56238",
+			"entry": "scripts/main.js",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"uuid": "8f4bce68-f6a6-44d4-a5e3-fafc33bd7bdc",
+			"version": [
+				1,
+				0,
+				1
+			]
+		},
+		{
+			"module_name": "@minecraft/server",
+			"version": "1.10.0-beta"
+		},
+		{
+			"module_name": "@minecraft/server-ui",
+			"version": "1.2.0-beta"
+		}
+	]
+}

@@ -1,0 +1,52 @@
+{
+	"texture_data": {
+		"elevators_elevator_white": {
+			"textures": "textures/blocks/elevator_white"
+		},
+		"elevators_elevator_orange": {
+			"textures": "textures/blocks/elevator_orange"
+		},
+		"elevators_elevator_magenta": {
+			"textures": "textures/blocks/elevator_magenta"
+		},
+		"elevators_elevator_light_blue": {
+			"textures": "textures/blocks/elevator_light_blue"
+		},
+		"elevators_elevator_yellow": {
+			"textures": "textures/blocks/elevator_yellow"
+		},
+		"elevators_elevator_lime": {
+			"textures": "textures/blocks/elevator_lime"
+		},
+		"elevators_elevator_pink": {
+			"textures": "textures/blocks/elevator_pink"
+		},
+		"elevators_elevator_gray": {
+			"textures": "textures/blocks/elevator_gray"
+		},
+		"elevators_elevator_silver": {
+			"textures": "textures/blocks/elevator_silver"
+		},
+		"elevators_elevator_cyan": {
+			"textures": "textures/blocks/elevator_cyan"
+		},
+		"elevators_elevator_purple": {
+			"textures": "textures/blocks/elevator_purple"
+		},
+		"elevators_elevator_blue": {
+			"textures": "textures/blocks/elevator_blue"
+		},
+		"elevators_elevator_brown": {
+			"textures": "textures/blocks/elevator_brown"
+		},
+		"elevators_elevator_green": {
+			"textures": "textures/blocks/elevator_green"
+		},
+		"elevators_elevator_red": {
+			"textures": "textures/blocks/elevator_red"
+		},
+		"elevators_elevator_black": {
+			"textures": "textures/blocks/elevator_black"
+		}
+	}
+}

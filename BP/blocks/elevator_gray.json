@@ -1,0 +1,33 @@
+{
+	"format_version": "1.20.60",
+	"minecraft:block": {
+		"description": {
+			"identifier": "elevators:gray_elevator",
+			"menu_category": {
+				"category": "items"
+			},
+			"states": {
+				"nullun_elevators:teleport_direction": [
+					0,
+					1,
+					2,
+					3,
+					4
+				]
+			}
+		},
+		"components": {
+			"minecraft:light_dampening": 15,
+			"minecraft:light_emission": 0,
+			"minecraft:geometry": "geometry.elevator",
+			"minecraft:material_instances": {
+				"*": {
+					"texture": "elevators_elevator_gray"
+				}
+			},
+			"minecraft:destructible_by_mining": {
+				"seconds_to_destroy": 1
+			}
+		}
+	}
+}

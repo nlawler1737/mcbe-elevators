@@ -1,0 +1,66 @@
+{
+	"elevators:black_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_black"
+	},
+	"elevators:blue_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_blue"
+	},
+	"elevators:brown_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_brown"
+	},
+	"elevators:cyan_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_cyan"
+	},
+	"elevators:gray_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_gray"
+	},
+	"elevators:green_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_green"
+	},
+	"elevators:light_blue_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_light_blue"
+	},
+	"elevators:lime_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_lime"
+	},
+	"elevators:magenta_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_magenta"
+	},
+	"elevators:orange_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_orange"
+	},
+	"elevators:pink_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_pink"
+	},
+	"elevators:purple_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_purple"
+	},
+	"elevators:red_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_red"
+	},
+	"elevators:light_gray_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_silver"
+	},
+	"elevators:white_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_white"
+	},
+	"elevators:yellow_elevator": {
+		"sound": "cloth",
+		"textures": "elevators_elevator_yellow"
+	}
+}

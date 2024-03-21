@@ -1,0 +1,28 @@
+{
+    "format_version": "1.12",
+    "minecraft:recipe_shaped": {
+      "description": {
+        "identifier": "elevators:elevator_brown"
+      },
+      "tags": [
+        "crafting_table"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:brown_wool"
+        },
+        "P": {
+          "item": "minecraft:ender_pearl"
+        }
+      },
+      "pattern": [
+        "###",
+        "#P#",
+        "###"
+      ],
+      "result": {
+        "item": "elevators:brown_elevator",
+        "count": 1
+      }
+    }
+  }
