@@ -10,14 +10,6 @@ export class Vector {
         this.y = y
         this.z = z
     }
-    [Symbol.isPrimitive]() {
-        const { x, y, z } = this
-        return {
-            x,
-            y,
-            z
-        }
-    }
     static get up() {
         return new Vector(0, 1, 0)
     }
@@ -37,9 +29,23 @@ export class Vector {
         return new Vector(0, 0, -1)
     }
     static add(v1, v2) {
-        return new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z)
+        const {x: x1, y: y1, z: z1} = v1
+        const {x: x2, y: y2, z: z2} = v2
+        return new Vector(x1 + x2, y1 + y2, z1 + z2)
     }
     static subtract(v1, v2) {
-        return new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z)
+        const {x: x1, y: y1, z: z1} = v1
+        const {x: x2, y: y2, z: z2} = v2
+        return new Vector(x1 - x2, y1 - y2, z1 - z2)
+    }
+    static multiply(v1, v2) {
+        const {x: x1, y: y1, z: z1} = v1
+        const {x: x2, y: y2, z: z2} = v2
+        return new Vector(x1 * x2, y1 * y2, z1 * z2)
+    }
+    static divide(v1, v2) {
+        const {x: x1, y: y1, z: z1} = v1
+        const {x: x2, y: y2, z: z2} = v2
+        return new Vector(x1 / x2, y1 / y2, z1 / z2)
     }
 }
