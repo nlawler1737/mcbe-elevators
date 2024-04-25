@@ -1,4 +1,8 @@
 {
+	"num_mip_levels": 4,
+	"padding": 8,
+	"resource_pack_name": "elevators",
+	"texture_name": "atlas.terrain",
 	"texture_data": {
 		"elevators_elevator_white": {
 			"textures": "textures/blocks/elevator_white"

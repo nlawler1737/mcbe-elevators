@@ -1,4 +1,9 @@
 {
+	"format_version": [
+		1,
+		1,
+		0
+	],
 	"elevators:black_elevator": {
 		"sound": "cloth",
 		"textures": "elevators_elevator_black"

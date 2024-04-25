@@ -6,7 +6,7 @@
 		],
 		"generated_with": {
 			"bridge": [
-				"2.7.15"
+				"2.7.17"
 			],
 			"dash": [
 				"github:bridge-core/dash-compiler#8fa35c73292f6382747d0f411fca26431a6d2c8e"
@@ -15,11 +15,11 @@
 	},
 	"header": {
 		"name": "Elevators RP",
-		"description": "Adds elevators to teleport vertically to between them.",
+		"description": "Adds elevators to teleport vertically to between them. (1.20.80)",
 		"min_engine_version": [
 			1,
 			20,
-			70
+			80
 		],
 		"uuid": "8f4bce68-f6a6-44d4-a5e3-fafc33bd7bdc",
 		"version": [
@@ -36,6 +36,16 @@
 				1,
 				0,
 				0
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"uuid": "9c04330c-0c85-4543-a454-34190c997236",
+			"version": [
+				1,
+				0,
+				1
 			]
 		}
 	]
