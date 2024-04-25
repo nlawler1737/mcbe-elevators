@@ -1,5 +1,6 @@
-import { system, world, Vector, Block, Player, PlayerInteractWithBlockBeforeEvent } from "@minecraft/server"
+import { system, world, Block, Player, PlayerInteractWithBlockBeforeEvent } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
+import { Vector } from "../Vector.js"
 
 interface ElevatorConfig {
     blocks?: string[]; // blocks that player can jump/sneak on to teleport
