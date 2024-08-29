@@ -5,7 +5,7 @@
 	"authors": [
 		"nullun"
 	],
-	"targetVersion": "1.21.0",
+	"targetVersion": "1.21.22",
 	"description": "Adds elevators to teleport vertically to between them.",
 	"experimentalGameplay": {
 		"holidayCreatorFeatures": false,
