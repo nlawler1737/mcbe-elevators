@@ -1,4 +1,4 @@
-import { system, world, Block, Player, PlayerInteractWithBlockBeforeEvent } from "@minecraft/server"
+import { system, world, Block, Player, PlayerInteractWithBlockBeforeEvent, Direction } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 import { Vector } from "../Vector.js"
 import { elevators as config } from "../config"
@@ -61,22 +61,11 @@ function detectOnElevator(): void {
                 return
             }
 
-            let block = null as Block
-            if (player.isJumping) {
-                block = blockBelow.above()
-                while (block.typeId !== blockBelowType && block.location.y < player.dimension.heightRange.max) {
-                    block = block.above()
-                }
-            } else if (player.isSneaking) {
-                block = blockBelow.below()
-                while (block.typeId !== blockBelowType && block.location.y > player.dimension.heightRange.min) {
-                    block = block.below()
-                }
-            }
+            let block = getNearestBlockType(blockBelow, player.isJumping ? Direction.Up : player.isSneaking ? Direction.Down : null)
 
             player.setDynamicProperty(PROPERTY_TELEPORT_READY, false)
 
-            if (block.typeId !== blockBelowType) return
+            if (!block || block.typeId !== blockBelowType) return
 
             try {
                 if (!block.above().isAir || !block.above().above().isAir) {
@@ -159,6 +148,16 @@ function detectPlayerInteract(event: PlayerInteractWithBlockBeforeEvent) {
             player.sendMessage(error)
         })
     })
+}
+
+function getNearestBlockType(block: Block, direction: Direction.Down | Direction.Up): Block | null {
+    if (!block || !direction) return null
+    if (direction === Direction.Down) {
+        return block.dimension.getBlockBelow(block.below().location, { includeTypes: [block.typeId] }) || null
+    } else if (direction === Direction.Up) {
+        return block.dimension.getBlockAbove(block.above().location, { includeTypes: [block.typeId] }) || null
+    }
+    return null
 }
 
 /**
