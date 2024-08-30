@@ -46,7 +46,7 @@ function detectOnElevator(): void {
 
         // round y pos to prevent bugs on some y locations
         const playerLocation = player.location
-        playerLocation.y = Math.round(playerLocation.y)
+        playerLocation.y = round(playerLocation.y, 0.00001)
         const playerY = playerLocation.y
 
         if (!player.isJumping && !player.isSneaking) {
@@ -159,4 +159,19 @@ function detectPlayerInteract(event: PlayerInteractWithBlockBeforeEvent) {
             player.sendMessage(error)
         })
     })
+}
+
+/**
+ * Rounds `num` if it is <= `tolerance`
+ * 
+ * ```js
+ * round(1.1, 0.001) // 1.1
+ * round(1.0000001, 0.001) // 1
+ * ```
+ */
+function round(num: number, tolerance: number) {
+    const rounded = Math.round(num);
+    const diff = Math.abs(rounded - num)
+    if (diff > tolerance) return num
+    return rounded
 }
