@@ -1,79 +1,63 @@
 import { system, world, Block, Player, PlayerInteractWithBlockBeforeEvent } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 import { Vector } from "../Vector.js"
+import { elevators as config } from "../config"
 
-interface ElevatorConfig {
-    blocks?: string[]; // blocks that player can jump/sneak on to teleport
-    teleportAllOnBlock?: boolean; // whether all entities on the block will be teleported with you
+const PROPERTY_TELEPORT_READY = "elevators:elevator_teleport_ready"
+const BLOCK_STATE_TELEPORT_DIRECTION = "nullun_elevators:teleport_direction"
+const ROTATIONS: Readonly<{ [key: number]: Vector }> = {
+    1: new Vector(0, 180, 0),
+    2: new Vector(0, 270, 0),
+    3: new Vector(0, 0, 0),
+    4: new Vector(0, 90, 0)
 }
+const ARROW_PATHS: ReadonlyArray<string> = [
+    "chevron_white_up.png",
+    "arrowRight.png",
+    "chevron_white_down.png",
+    "arrowLeft.png",
+]
+const FACING_DIRECTIONS: ReadonlyArray<string> = [
+    "None",
+    "North",
+    "East",
+    "South",
+    "West"
+]
 
 
-world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
-    elevatorOnInteract(event)
-})
-
-let CONFIG: ElevatorConfig = {}
 const formsOpen = new Set()
 
-export default function elevator(config: ElevatorConfig) {
-    CONFIG = config
-    return {
-        onInterval: elevatorOnInterval,
-        onInteract: elevatorOnInteract
-    }
-}
+system.runInterval(() => {
+    detectOnElevator()
+})
 
+world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
+    detectPlayerInteract(event)
+})
 
 /**
- * ```js
- * // how to use
- * import elevator from "./elevators/elevator"
- * system.runInterval(() => {
- *   elevator({
- *     blocks: [
- *       "elevators:black_elevator",
- *       "elevators:blue_elevator",
- *       "elevators:brown_elevator",
- *       "elevators:cyan_elevator",
- *       "elevators:gray_elevator",
- *       "elevators:green_elevator",
- *       "elevators:light_blue_elevator",
- *       "elevators:lime_elevator",
- *       "elevators:magenta_elevator",
- *       "elevators:orange_elevator",
- *       "elevators:pink_elevator",
- *       "elevators:purple_elevator",
- *       "elevators:red_elevator",
- *       "elevators:light_gray_elevator",
- *       "elevators:white_elevator",
- *       "elevators:yellow_elevator",
- *        ...
- *     ],
- *     teleportAllOnBlock: false
- *   })
- * })
- * ```
+ * Detects every interval if a player is sneaking / jumping on an elevator
  */
-
-function elevatorOnInterval(): void {
-    if (!CONFIG.blocks.length) return
+function detectOnElevator(): void {
+    if (!config.blocks.size) return
     world.getAllPlayers().forEach(player => {
         const heightRange = player.dimension.heightRange
+
+        // round y pos to prevent bugs on some y locations
         const playerLocation = player.location
         playerLocation.y = Math.round(playerLocation.y)
         const playerY = playerLocation.y
 
         if (!player.isJumping && !player.isSneaking) {
-            player.setDynamicProperty("elevators:elevator_teleport_ready", true)
-        }
-        else if (((player.isJumping && !player.isSneaking) || (player.isSneaking && !player.isJumping)) && player.getDynamicProperty("elevators:elevator_teleport_ready") && playerY <= heightRange.max && playerY > heightRange.min) {
+            player.setDynamicProperty(PROPERTY_TELEPORT_READY, true)
+        } else if (((player.isJumping && !player.isSneaking) || (player.isSneaking && !player.isJumping)) && player.getDynamicProperty(PROPERTY_TELEPORT_READY) && playerY <= heightRange.max && playerY > heightRange.min) {
             const blockBelow = player.dimension.getBlock(Vector.add(Vector.down, playerLocation))
             const blockBelowType = blockBelow.typeId
-
             if (player.isSneaking && blockBelow.location.y === -64) return
 
-            if (!CONFIG.blocks.includes(blockBelowType)) {
-                player.setDynamicProperty("elevators:elevator_teleport_ready", false)
+            if (!config.blocks.has(blockBelowType)) {
+                player.setDynamicProperty(PROPERTY_TELEPORT_READY, false)
                 return
             }
 
@@ -90,7 +74,7 @@ function elevatorOnInterval(): void {
                 }
             }
 
-            player.setDynamicProperty("elevators:elevator_teleport_ready", false)
+            player.setDynamicProperty(PROPERTY_TELEPORT_READY, false)
 
             if (block.typeId !== blockBelowType) return
 
@@ -102,18 +86,13 @@ function elevatorOnInterval(): void {
             } catch (e) { }
 
             const tpLocation = Vector.add(playerLocation, Vector.subtract(block.location, blockBelow.location))
-            const directions = {
-                1: new Vector(0, 180, 0),
-                2: new Vector(0, 270, 0),
-                3: new Vector(0, 0, 0),
-                4: new Vector(0, 90, 0)
-            }
-            const directionState = block.permutation.getState("nullun_elevators:teleport_direction") as number
-            if (CONFIG.teleportAllOnBlock) {
+
+            const directionState = block.permutation.getState(BLOCK_STATE_TELEPORT_DIRECTION) as number
+            if (config.teleportAllOnBlock) {
                 player.dimension.getEntitiesAtBlockLocation(playerLocation).forEach(entity => {
                     if (entity instanceof Player) {
                         if (directionState) {
-                            entity.teleport(tpLocation, { rotation: directions[directionState] })
+                            entity.teleport(tpLocation, { rotation: ROTATIONS[directionState] })
                         } else {
                             entity.teleport(tpLocation)
                         }
@@ -123,7 +102,7 @@ function elevatorOnInterval(): void {
                 })
             } else {
                 if (directionState) {
-                    player.teleport(tpLocation, { rotation: directions[directionState] })
+                    player.teleport(tpLocation, { rotation: ROTATIONS[directionState] })
 
                 } else {
                     player.teleport(tpLocation)
@@ -131,46 +110,37 @@ function elevatorOnInterval(): void {
                 }
             }
             system.runTimeout(() => {
-                world.playSound("mob.endermen.portal", block.location, { volume: 0.5, pitch: 2.5 })
-                world.playSound("mob.endermen.portal", blockBelow.location, { volume: 0.5, pitch: 2.5 })
+                player.dimension.playSound("mob.endermen.portal", block.center(), { volume: 0.5, pitch: 2.5 })
+                player.dimension.playSound("mob.endermen.portal", blockBelow.center(), { volume: 0.5, pitch: 2.5 })
             }, 1)
         }
     })
 }
 
-function elevatorOnInteract(event: PlayerInteractWithBlockBeforeEvent) {
+/**
+ * Shows player UI to set teleport facing direction on an elevator block
+ */
+function detectPlayerInteract(event: PlayerInteractWithBlockBeforeEvent) {
     const { block, player, itemStack } = event
     let facing = Math.round((((player.getRotation().y + 180) % 360) / 90)) + 1
     if (facing === 5) facing = 1
 
 
-    if (!CONFIG.blocks.length) return
+    if (!config.blocks.size) return
     if (itemStack !== undefined) return
-    if (!CONFIG.blocks.includes(block.typeId)) return
+    if (!config.blocks.has(block.typeId)) return
     if (formsOpen.has(player.id)) {
         return
     } else {
         formsOpen.add(player.id)
     }
 
-    const currentDirection = block.permutation.getState("nullun_elevators:teleport_direction") as number
-    const arrows = [
-        "chevron_white_up.png",
-        "arrowRight.png",
-        "chevron_white_down.png",
-        "arrowLeft.png",
-    ]
-    const values = [
-        "None",
-        "North",
-        "East",
-        "South",
-        "West"
-    ].map((value, i) => {
+    const currentDirection = block.permutation.getState(BLOCK_STATE_TELEPORT_DIRECTION) as number
+    const values = FACING_DIRECTIONS.map((value, i) => {
         let prefix = ""
         if (i === currentDirection) prefix += "§2"
         if (i === 0) return [prefix + value]
-        return [prefix + value, "textures/ui/" + arrows[(i + 4 - facing) % 4]]
+        return [prefix + value, "textures/ui/" + ARROW_PATHS[(i + 4 - facing) % 4]]
     })
 
     const form = new ActionFormData()
@@ -184,7 +154,7 @@ function elevatorOnInteract(event: PlayerInteractWithBlockBeforeEvent) {
         form.show(player).then((event) => {
             formsOpen.delete(player.id)
             if (event.canceled) return
-            block.setPermutation(block.permutation.withState("nullun_elevators:teleport_direction", event.selection))
+            block.setPermutation(block.permutation.withState(BLOCK_STATE_TELEPORT_DIRECTION, event.selection))
         }).catch((error) => {
             player.sendMessage(error)
         })

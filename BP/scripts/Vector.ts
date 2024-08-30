@@ -1,11 +1,10 @@
 
 export class Vector {
-    /**
-     * @param {number} x
-     * @param {number} y
-     * @param {number} z
-     */
-    constructor(x, y, z) {
+    x: number;
+    y: number;
+    z: number;
+
+    constructor(x: number, y: number, z: number) {
         this.x = x
         this.y = y
         this.z = z
@@ -28,24 +27,24 @@ export class Vector {
     static get west() {
         return new Vector(0, 0, -1)
     }
-    static add(v1, v2) {
-        const {x: x1, y: y1, z: z1} = v1
-        const {x: x2, y: y2, z: z2} = v2
+    static add(v1: Vector, v2: Vector) {
+        const { x: x1, y: y1, z: z1 } = v1
+        const { x: x2, y: y2, z: z2 } = v2
         return new Vector(x1 + x2, y1 + y2, z1 + z2)
     }
-    static subtract(v1, v2) {
-        const {x: x1, y: y1, z: z1} = v1
-        const {x: x2, y: y2, z: z2} = v2
+    static subtract(v1: Vector, v2: Vector) {
+        const { x: x1, y: y1, z: z1 } = v1
+        const { x: x2, y: y2, z: z2 } = v2
         return new Vector(x1 - x2, y1 - y2, z1 - z2)
     }
-    static multiply(v1, v2) {
-        const {x: x1, y: y1, z: z1} = v1
-        const {x: x2, y: y2, z: z2} = v2
+    static multiply(v1: Vector, v2: Vector) {
+        const { x: x1, y: y1, z: z1 } = v1
+        const { x: x2, y: y2, z: z2 } = v2
         return new Vector(x1 * x2, y1 * y2, z1 * z2)
     }
-    static divide(v1, v2) {
-        const {x: x1, y: y1, z: z1} = v1
-        const {x: x2, y: y2, z: z2} = v2
+    static divide(v1: Vector, v2: Vector) {
+        const { x: x1, y: y1, z: z1 } = v1
+        const { x: x2, y: y2, z: z2 } = v2
         return new Vector(x1 / x2, y1 / y2, z1 / z2)
     }
 }
