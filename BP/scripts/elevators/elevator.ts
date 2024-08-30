@@ -80,6 +80,7 @@ function detectOnElevator(): void {
             if (config.teleportAllOnBlock) {
                 player.dimension.getEntitiesAtBlockLocation(playerLocation).forEach(entity => {
                     if (entity instanceof Player) {
+                        if (!config.teleportPlayers && entity !== player) return
                         if (directionState) {
                             entity.teleport(tpLocation, { rotation: ROTATIONS[directionState] })
                         } else {
@@ -161,7 +162,7 @@ function getNearestBlockType(block: Block, direction: Direction.Down | Direction
 }
 
 /**
- * Rounds `num` if it is <= `tolerance`
+ * Rounds `num` if when rounded the difference is <= `tolerance`
  * 
  * ```js
  * round(1.1, 0.001) // 1.1
