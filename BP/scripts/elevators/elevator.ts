@@ -48,8 +48,6 @@ function detectOnElevator(): void {
         // round y pos to prevent bugs on some y locations
         const playerLocation = player.location
         playerLocation.y = round(playerLocation.y, 0.00001)
-        const playerY = playerLocation.y
-
 
         // set teleport ready to true if player is not sneaking or jumping
         if (!player.isJumping && !player.isSneaking) {
@@ -57,7 +55,7 @@ function detectOnElevator(): void {
             return
         }
 
-        const isPlayerBetweenMinAndMaxY = playerY <= heightRange.max && playerY > heightRange.min
+        const isPlayerBetweenMinAndMaxY = playerLocation.y <= heightRange.max && playerLocation.y > heightRange.min
         const isTeleportReady = player.getDynamicProperty(PROPERTY_TELEPORT_READY)
 
         if (!isJumpingXorSneaking || !isTeleportReady || !isPlayerBetweenMinAndMaxY) {
@@ -87,7 +85,14 @@ function detectOnElevator(): void {
             }
         } catch (e) { }
 
-        const tpLocation = Vector.add(playerLocation, Vector.subtract(block.location, blockBelow.location))
+        const blockDifference = Vector.subtract(block.location, blockBelow.location)
+        const yAbsDifference = Math.abs(blockDifference.y)
+        if (yAbsDifference > config.maxTeleportDistance) {
+            player.sendMessage(`§cElevator too far away\nMax distance: ${config.maxTeleportDistance}\nCurrent distance: ${yAbsDifference}`)
+            return
+        }
+
+        const tpLocation = Vector.add(playerLocation, blockDifference)
         const directionState = block.permutation.getState(BLOCK_STATE_TELEPORT_DIRECTION) as number
 
         if (config.teleportAllOnBlock) {

@@ -14,4 +14,12 @@ export type ElevatorsConfig = {
      * Should teleporting all mobs with a player include other players
      */
     teleportPlayers: boolean,
+    /**
+     * Maximum distance you can teleport between elevators
+     * 
+     * Use `Infinity` for no limit
+     * 
+     * Range: 3 - Infinity
+     */
+    maxTeleportDistance: number,
 }

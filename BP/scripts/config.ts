@@ -25,6 +25,7 @@ const elevators: ElevatorsConfig = {
     ]),
     teleportAllOnBlock: true,
     teleportPlayers: false,
+    maxTeleportDistance: Infinity,
 }
 
 export default {
