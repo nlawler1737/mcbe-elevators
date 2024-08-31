@@ -1,5 +1,5 @@
 {
-	"format_version": "1.20.60",
+	"format_version": "1.21.20",
 	"minecraft:block": {
 		"description": {
 			"identifier": "elevators:brown_elevator",
@@ -26,8 +26,11 @@
 				}
 			},
 			"minecraft:destructible_by_mining": {
-				"seconds_to_destroy": 1
-			}
+				"seconds_to_destroy": 1.2
+			},
+			"minecraft:custom_components": [
+				"elevators:elevator"
+			]
 		}
 	}
 }

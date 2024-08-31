@@ -47,4 +47,9 @@ export class Vector {
         const { x: x2, y: y2, z: z2 } = v2
         return new Vector(x1 / x2, y1 / y2, z1 / z2)
     }
+    static matches(v1: Vector, v2: Vector): boolean {
+        const { x: x1, y: y1, z: z1 } = v1
+        const { x: x2, y: y2, z: z2 } = v2
+        return x1 === x2 && y1 === y2 && z1 === z2
+    }
 }

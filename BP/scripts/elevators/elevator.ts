@@ -1,4 +1,4 @@
-import { system, world, Block, Player, PlayerInteractWithBlockBeforeEvent, Direction } from "@minecraft/server"
+import { system, world, Block, Player, BlockComponentPlayerInteractEvent, Direction, BlockCustomComponent } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 import { Vector } from "../Vector.js"
 import { elevators as config } from "../config"
@@ -25,15 +25,21 @@ const FACING_DIRECTIONS: ReadonlyArray<string> = [
     "West"
 ]
 
+const ElevatorBlockComponent: BlockCustomComponent = {
+    onPlayerInteract: detectPlayerInteract,
+}
+
+world.beforeEvents.worldInitialize.subscribe((event) => {
+    event.blockComponentRegistry.registerCustomComponent(
+        "elevators:elevator",
+        ElevatorBlockComponent
+    )
+})
 
 const formsOpen = new Set()
 
 system.runInterval(() => {
     detectOnElevator()
-})
-
-world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
-    detectPlayerInteract(event)
 })
 
 /**
@@ -55,7 +61,7 @@ function detectOnElevator(): void {
             return
         }
 
-        const isPlayerBetweenMinAndMaxY = playerLocation.y <= heightRange.max && playerLocation.y > heightRange.min
+        const isPlayerBetweenMinAndMaxY = playerLocation.y <= heightRange.max && playerLocation.y > heightRange.min + 1
         const isTeleportReady = player.getDynamicProperty(PROPERTY_TELEPORT_READY)
 
         if (!isJumpingXorSneaking || !isTeleportReady || !isPlayerBetweenMinAndMaxY) {
@@ -128,14 +134,14 @@ function detectOnElevator(): void {
 /**
  * Shows player UI to set teleport facing direction on an elevator block
  */
-function detectPlayerInteract(event: PlayerInteractWithBlockBeforeEvent) {
-    const { block, player, itemStack } = event
+function detectPlayerInteract(event: BlockComponentPlayerInteractEvent) {
+    const { block, player } = event
+    if (player.isSneaking) return
     let facing = Math.round((((player.getRotation().y + 180) % 360) / 90)) + 1
     if (facing === 5) facing = 1
 
 
     if (!config.blocks.size) return
-    if (itemStack !== undefined) return
     if (!config.blocks.has(block.typeId)) return
     if (formsOpen.has(player.id)) {
         return
@@ -170,13 +176,29 @@ function detectPlayerInteract(event: PlayerInteractWithBlockBeforeEvent) {
 }
 
 function getNearestBlockType(block: Block, direction: Direction.Down | Direction.Up): Block | null {
-    if (!block || !direction) return null
+    if (!(block instanceof Block) || !direction) return null
+    const { min, max } = block.dimension.heightRange
+    const blockType = block.typeId
+    let b = null as Block
     if (direction === Direction.Down) {
-        return block.dimension.getBlockBelow(block.below().location, { includeTypes: [block.typeId] }) || null
+        b = block.below()
+        while (b.typeId !== blockType && b.location.y > min) {
+            b = b.below()
+        }
     } else if (direction === Direction.Up) {
-        return block.dimension.getBlockAbove(block.above().location, { includeTypes: [block.typeId] }) || null
+        b = block.above()
+        while (b.typeId !== blockType && b.location.y < max) {
+            b = b.above()
+        }
     }
-    return null
+    return b
+    // when dimension.getBlockBelow() is stable
+    // if (direction === Direction.Down) {
+    //     return block.dimension.getBlockBelow(block.below().location, { includeTypes: [block.typeId] }) || null
+    // } else if (direction === Direction.Up) {
+    //     return block.dimension.getBlockAbove(block.above().location, { includeTypes: [block.typeId] }) || null
+    // }
+    // return null
 }
 
 /**

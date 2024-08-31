@@ -14,7 +14,7 @@
 		}
 	},
 	"header": {
-		"name": "Elevators RP",
+		"name": "Elevators RP v1.0.5",
 		"description": "Adds elevators to teleport vertically to between them. (1.21.22)",
 		"min_engine_version": [
 			1,
@@ -25,7 +25,7 @@
 		"version": [
 			1,
 			0,
-			4
+			5
 		]
 	},
 	"modules": [
@@ -36,16 +36,6 @@
 				1,
 				0,
 				0
-			]
-		}
-	],
-	"dependencies": [
-		{
-			"uuid": "9c04330c-0c85-4543-a454-34190c997236",
-			"version": [
-				1,
-				0,
-				5
 			]
 		}
 	]
