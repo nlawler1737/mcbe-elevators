@@ -105,6 +105,15 @@ function detectOnElevator(): void {
         const tpLocation = Vector.add(playerLocation, blockDifference)
         const directionState = block.permutation.getState(BLOCK_STATE_TELEPORT_DIRECTION) as number
 
+        // teleport location cannot be too close to the edges of the block
+        // this prevents colliding with surrounding block when teleporting
+        tpLocation.x = Math.min(Math.max(tpLocation.x, Math.floor(tpLocation.x) + 0.3), Math.ceil(tpLocation.x) - 0.3)
+        tpLocation.z = Math.min(Math.max(tpLocation.z, Math.floor(tpLocation.z) + 0.3), Math.ceil(tpLocation.z) - 0.3)
+
+        // teleport to the surface of the elevator to prevent
+        // colliding with block above
+        tpLocation.y = Math.floor(tpLocation.y)
+
         if (config.teleportAllOnBlock) {
             player.dimension.getEntitiesAtBlockLocation(playerLocation).forEach(entity => {
                 if (entity instanceof Player) {
