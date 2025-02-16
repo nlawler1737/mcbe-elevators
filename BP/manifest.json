@@ -14,18 +14,18 @@
 		}
 	},
 	"header": {
-		"name": "Elevators BP v1.0.6",
-		"description": "Adds elevators to teleport vertically to between them. (1.21.22)",
+		"name": "Elevators BP v1.1.0",
+		"description": "Adds elevators to teleport vertically to between them. (1.21.60)",
 		"min_engine_version": [
 			1,
 			21,
-			22
+			60
 		],
 		"uuid": "9c04330c-0c85-4543-a454-34190c997236",
 		"version": [
 			1,
-			0,
-			6
+			1,
+			0
 		]
 	},
 	"modules": [
