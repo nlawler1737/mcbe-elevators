@@ -1,6 +1,7 @@
 import { system, world, Block, Player, BlockComponentPlayerInteractEvent, Direction, BlockCustomComponent } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 import { Vector } from "../Vector.js"
+import { isBlockTransparent } from "./utils"
 import { elevators as config } from "../config"
 
 const PROPERTY_TELEPORT_READY = "elevators:elevator_teleport_ready"
@@ -85,7 +86,10 @@ function detectOnElevator(): void {
         if (!block || block.typeId !== blockBelowType) return
 
         try {
-            if (!block.above().isAir || !block.above().above().isAir) {
+            const above1 = block.above()
+            const above2 = above1.above()
+
+            if (!isBlockTransparent(above1) || !isBlockTransparent(above2)) {
                 player.sendMessage("§cElevator Obstructed")
                 return
             }
