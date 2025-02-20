@@ -23,3 +23,12 @@ export type ElevatorsConfig = {
      */
     maxTeleportDistance: number,
 }
+
+export type TransparentBlock = {
+    /**
+     * If the transparent block has a height, like carpet
+     * 
+     * For example, carpet would be `0.0625` aka. `1/16` because it is one pixel tall
+     */
+    height?: number
+}

@@ -1,18 +1,23 @@
-import { Block, BlockPermutation } from "@minecraft/server"
+import type { Block, BlockPermutation } from "@minecraft/server"
 import { NON_COLLIDABLE_BLOCK_TYPE_STRINGS, NON_COLLIDABLE_BLOCK_TYPE_REGEXS, NON_COLLIDABLE_BLOCK_TYPE_FUNCTIONS } from "./constants";
+import { TransparentBlock } from "./types"
 
 
-export function isBlockTransparent(block: Block) {
+export function getTransparentBlock(block: Block): TransparentBlock | null {
     const typeId = block.typeId
 
-    if (block.isAir) return true
+    return NON_COLLIDABLE_BLOCK_TYPE_STRINGS.get(typeId) ?? getTransparentBlockFromRegex(typeId) ?? getTransparentBlockFromFunction(typeId, block.permutation) ?? null
+}
 
-    if (NON_COLLIDABLE_BLOCK_TYPE_STRINGS.includes(typeId)) return true
+function getTransparentBlockFromRegex(typeId: string): TransparentBlock | null {
+    for (const [regex, transparentBlock] of NON_COLLIDABLE_BLOCK_TYPE_REGEXS) {
+        if (regex.test(typeId)) return transparentBlock
+    }
 
-    if (NON_COLLIDABLE_BLOCK_TYPE_REGEXS.some((value) => value.test(typeId))) return true
+    return null
+}
 
-    const func = NON_COLLIDABLE_BLOCK_TYPE_FUNCTIONS[typeId]
-    if (func && func(block.permutation)) return true
-
-    return false
+function getTransparentBlockFromFunction(typeId: string, block: BlockPermutation): TransparentBlock | null{
+    const func = NON_COLLIDABLE_BLOCK_TYPE_FUNCTIONS.get(typeId)
+    return (func && func(block)) ?? null
 }

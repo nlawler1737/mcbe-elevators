@@ -1,8 +1,9 @@
 import { system, world, Block, Player, BlockComponentPlayerInteractEvent, Direction, BlockCustomComponent } from "@minecraft/server"
 import { ActionFormData } from "@minecraft/server-ui"
 import { Vector } from "../Vector.js"
-import { isBlockTransparent } from "./utils"
+import { getTransparentBlock } from "./utils"
 import { elevators as config } from "../config"
+import { TransparentBlock } from "./types"
 
 const PROPERTY_TELEPORT_READY = "elevators:elevator_teleport_ready"
 const BLOCK_STATE_TELEPORT_DIRECTION = "nullun_elevators:teleport_direction"
@@ -85,11 +86,13 @@ function detectOnElevator(): void {
 
         if (!block || block.typeId !== blockBelowType) return
 
+        let tpLocationBlock: TransparentBlock | null = null;
         try {
             const above1 = block.above()
             const above2 = above1.above()
+            tpLocationBlock = getTransparentBlock(above1)
 
-            if (!isBlockTransparent(above1) || !isBlockTransparent(above2)) {
+            if (!tpLocationBlock || !getTransparentBlock(above2)) {
                 player.sendMessage("§cElevator Obstructed")
                 return
             }
@@ -112,7 +115,7 @@ function detectOnElevator(): void {
 
         // teleport to the surface of the elevator to prevent
         // colliding with block above
-        tpLocation.y = Math.floor(tpLocation.y)
+        tpLocation.y = Math.floor(tpLocation.y) + (tpLocationBlock?.height ?? 0)
 
         if (config.teleportAllOnBlock) {
             player.dimension.getEntitiesAtBlockLocation(playerLocation).forEach(entity => {
