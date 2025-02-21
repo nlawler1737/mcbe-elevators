@@ -1,10 +1,14 @@
-import { ElevatorsConfig } from "./elevators/types"
+import { ElevatorsConfig, ElevatorsConfigOptions } from "./types"
 
-type Config = {
-    elevators: ElevatorsConfig
+const options: ElevatorsConfigOptions = {
+    teleportMobs: 1,
+    teleportPlayers: 0,
+    maxTeleportDistance: 2,
+    skipObstructed: 0,
+    ignoreObstructions: 0,
 }
 
-const elevators: ElevatorsConfig = {
+export const config: ElevatorsConfig = {
     blocks: new Set([
         "elevators:black_elevator",
         "elevators:blue_elevator",
@@ -23,17 +27,8 @@ const elevators: ElevatorsConfig = {
         "elevators:white_elevator",
         "elevators:yellow_elevator",
     ]),
-    teleportAllOnBlock: true,
-    teleportPlayers: false,
-    maxTeleportDistance: Infinity,
+    options,
+
 }
 
-export default {
-    elevators,
-    //...
-} as Config
-
-export {
-    elevators,
-    //...
-};
+export default config;
