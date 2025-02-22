@@ -1,6 +1,7 @@
 import { BlockComponentPlayerInteractEvent } from "@minecraft/server"
 import elevatorUI from "../ui/elevator"
 import config from "../config"
+
 /**
  * Shows player UI to set teleport facing direction on an elevator block
  */

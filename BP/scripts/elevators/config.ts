@@ -1,7 +1,8 @@
 import { ElevatorsConfig, ElevatorsConfigOptions } from "./types"
 
 const options: ElevatorsConfigOptions = {
-    teleportMobs: 1,
+    disabled: 0,
+    teleportEntities: 1,
     teleportPlayers: 0,
     maxTeleportDistance: 2,
     skipObstructed: 0,

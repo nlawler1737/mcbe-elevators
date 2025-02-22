@@ -11,6 +11,7 @@ import config from "../config"
 export default function detectOnElevator(): void {
     if (!config.blocks.size) return
     world.getAllPlayers().forEach(player => {
+        if (scoreboard.disabled) return
         const heightRange = player.dimension.heightRange
         const isJumpingXorSneaking = xor(player.isJumping, player.isSneaking)
 
@@ -69,7 +70,7 @@ export default function detectOnElevator(): void {
         // colliding with block above
         tpLocation.y = Math.floor(tpLocation.y) + (nearestElevator.transparentBlocks?.[0]?.height ?? 0)
 
-        if (scoreboard.teleportMobs) {
+        if (scoreboard.teleportEntities || scoreboard.teleportPlayers) {
             player.dimension.getEntitiesAtBlockLocation(playerLocation).forEach(entity => {
                 if (entity instanceof Player) {
                     if (!scoreboard.teleportPlayers && entity !== player) return
@@ -78,7 +79,7 @@ export default function detectOnElevator(): void {
                     } else {
                         entity.teleport(tpLocation)
                     }
-                } else {
+                } else if (scoreboard.teleportEntities) {
                     entity.teleport(Vector.add(nearestElevator.block.bottomCenter(), Vector.up))
                 }
             })

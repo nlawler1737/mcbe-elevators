@@ -20,6 +20,12 @@ for (const key in config.options) {
     }
 }
 
+scoreboard.getParticipants().forEach((value) => {
+    if (!(value.displayName in config.options)) {
+        scoreboard.removeParticipant(value.displayName)
+    }
+})
+
 const scoreboardProxy = new Proxy(scoreboardConfig, {
     set(target, prop, value) {
         const newValue = resolveFormat(prop as string, value)
@@ -31,9 +37,10 @@ const scoreboardProxy = new Proxy(scoreboardConfig, {
 
 function resolveFormat(key: string, value: any) {
     switch (key) {
+        case "disabled":
         case "ignoreObstructions":
         case "skipObstructed":
-        case "teleportMobs":
+        case "teleportEntities":
         case "teleportPlayers":
             return scoreboardFormat("boolean", value);
         case "maxTeleportDistance":

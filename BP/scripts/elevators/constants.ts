@@ -76,15 +76,16 @@ export const NON_COLLIDABLE_BLOCK_TYPE_REGEXS = new Map<RegExp, TransparentBlock
 ])
 
 export const NON_COLLIDABLE_BLOCK_TYPE_FUNCTIONS = new Map<string, (block: BlockPermutation) => TransparentBlock | null>([
-  ["minecraft:snow_layer", (block: BlockPermutation) => {
-      return block.getState("height") === 0 ? {} : null
-  }]
+    ["minecraft:snow_layer", (block: BlockPermutation) => {
+        return block.getState("height") === 0 ? {} : null
+    }]
 ])
 
 export const HELP_TEXT = "§l== Elevators Config ==§r\n" + [
-    ["Teleport Mobs", "Allows mobs to teleport along with players"],
+    ["Disable Elevators", "Disables the use of elevators"],
+    ["Teleport Entities", "Allows entities to teleport along with players. This does not include other players"],
     ["Teleport Players", "Allows players to teleport along with other players"],
     ["Skip Obstructed", "Obstructed elevators will be skipped. Acts as if the elevator is not there."],
     ["Ignore Obstructions", "Players will always be teleported, ignoring any obstructions above an elevator."],
-    ["Max Teleport Distance", "Max distance a elevators are to be spaced apart. Distance is surface to surface of elevators.\nDistance should be greater than 2\n-1 = No Limit"]
+    ["Max Teleport Distance", "Max distance a elevators are to be spaced apart. Distance is surface to surface of elevators.\n  Distance should be greater than 2\n  -1 = No Limit"]
 ].map((a) => `§b${a[0]}§r - ${a[1]}`).join("\n\n")

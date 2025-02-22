@@ -1,9 +1,13 @@
 export type ElevatorsConfigOptions = {
     /**
+     * Disable Elevators
+     */
+    disabled: 0 | 1,
+    /**
      * When a player users an elevator, should all mobs
      * on the elevator also be teleported with the player
      */
-    teleportMobs: 0 | 1,
+    teleportEntities: 0 | 1,
     /**
      * Should teleporting all mobs with a player include other players
      */

@@ -3,7 +3,6 @@ import { scoreboard } from "./scoreboard"
 import { NON_COLLIDABLE_BLOCK_TYPE_STRINGS, NON_COLLIDABLE_BLOCK_TYPE_REGEXS, NON_COLLIDABLE_BLOCK_TYPE_FUNCTIONS } from "./constants";
 import { TransparentBlock } from "./types"
 
-
 export function getTransparentBlock(block: Block): TransparentBlock | null {
     const typeId = block.typeId
 
@@ -18,7 +17,7 @@ function getTransparentBlockFromRegex(typeId: string): TransparentBlock | null {
     return null
 }
 
-function getTransparentBlockFromFunction(typeId: string, block: BlockPermutation): TransparentBlock | null{
+function getTransparentBlockFromFunction(typeId: string, block: BlockPermutation): TransparentBlock | null {
     const func = NON_COLLIDABLE_BLOCK_TYPE_FUNCTIONS.get(typeId)
     return (func && func(block)) ?? null
 }
@@ -81,18 +80,21 @@ export function getNearestElevatorType(block: Block, direction: Direction.Down |
 }
 
 export function getTransparentBlocksAboveElevator(block: Block): Array<TransparentBlock | null> {
-    const res: Array<TransparentBlock | null> = []
-    let above1: Block = null;
-    let above2: Block = null;
-    if (!scoreboard.ignoreObstructions) {
-        try {
-            above1 = block.above()
-            res[0] = getTransparentBlock(above1)
-            above2 = above1.above()
-            res[1] = getTransparentBlock(above2)
-        } catch (e) {}
+    const res: Array<TransparentBlock | null> = [null, null]
+    try {
+        const above1 = block.above()
+        res[0] = getTransparentBlock(above1)
+        const above2 = above1.above()
+        res[1] = getTransparentBlock(above2)
+    } catch (e) {
+        // handle when `above2` is above build limit
+        // set as transparent
+        if (e.name === "LocationOutOfWorldBoundariesError") {
+            res[1] = {}
+        }
     }
-    return [res[0], res[1]]
+
+    return res
 }
 
 /**
