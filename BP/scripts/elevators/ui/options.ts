@@ -17,6 +17,7 @@ export default function create(player: Player) {
         { type: "toggle", args: ["§cDisable Elevators", !!scoreboard.disabled], data: { id: "disabled" }, handler: updateScoreboard },
     ]
     const form = new ModalFormData()
+    form.title("Elevator Config")
     for (const action of actions) {
         form[action.type](...action.args)
     }
