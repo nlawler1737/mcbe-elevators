@@ -14,11 +14,10 @@ export const ROTATIONS: Readonly<{ [key: number]: Vector }> = {
     4: new Vector(0, 90, 0)
 }
 export const ARROW_PATHS: ReadonlyArray<string> = [
-    "elevators_up.png",
-    "elevators_right.png",
-    "elevators_down.png",
-    "elevators_left.png",
-]
+    "chevron_white_up.png",
+    "arrowRight.png",
+    "chevron_white_down.png",
+    "arrowLeft.png",
 export const FACING_DIRECTIONS: ReadonlyArray<string> = [
     "None",
     "North",

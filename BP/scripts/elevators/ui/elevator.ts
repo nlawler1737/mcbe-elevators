@@ -11,7 +11,7 @@ export default function create(player: Player, block: Block) {
     const values = FACING_DIRECTIONS.map((value, i) => {
         let prefix = ""
         if (i === currentDirection) prefix += "§2"
-        if (i === 0) return [prefix + value, "textures/ui/elevators_direction.png"]
+        if (i === 0) return [prefix + value, "textures/ui/refresh_hover.png"]
         return [prefix + value, "textures/ui/" + ARROW_PATHS[(i + 4 - facing) % 4]]
     })
 
