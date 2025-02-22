@@ -18,6 +18,7 @@ export const ARROW_PATHS: ReadonlyArray<string> = [
     "arrowRight.png",
     "chevron_white_down.png",
     "arrowLeft.png",
+]
 export const FACING_DIRECTIONS: ReadonlyArray<string> = [
     "None",
     "North",
