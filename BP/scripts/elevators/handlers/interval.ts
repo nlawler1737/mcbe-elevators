@@ -67,7 +67,7 @@ export default function detectOnElevator(): void {
 
         // teleport to the surface of the elevator to prevent
         // colliding with block above
-        tpLocation.y = Math.floor(tpLocation.y)
+        tpLocation.y = Math.floor(tpLocation.y) + (nearestElevator.transparentBlocks?.[0]?.height ?? 0)
 
         if (scoreboard.teleportMobs) {
             player.dimension.getEntitiesAtBlockLocation(playerLocation).forEach(entity => {
